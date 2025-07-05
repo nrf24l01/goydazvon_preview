@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" class="h-full bg-gray-900 text-white">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Гойдазвон - Мемный проект</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full flex flex-col items-center justify-center px-4">
+
+  <!-- Контент главной страницы -->
+  <main id="main-content" class="max-w-xl text-center space-y-8 transition-opacity duration-1000">
+    <h1 class="text-5xl font-extrabold">Гойдазвон</h1>
+    <p class="text-lg text-gray-300">Добро пожаловать на мемный проект Гойдазвон! Здесь весело и непредсказуемо.</p>
+
+    <div class="space-x-4">
+      <button class="px-6 py-3 bg-blue-600 rounded hover:bg-blue-700 transition">Регистрация</button>
+      <button class="px-6 py-3 bg-green-600 rounded hover:bg-green-700 transition">Вход</button>
+      <button class="px-6 py-3 bg-gray-700 rounded hover:bg-gray-600 transition">О проекте</button>
+    </div>
+  </main>
+
+  <!-- Видео рикролла (скрыто по умолчанию) -->
+  <div id="rickroll-container" class="fixed inset-0 bg-black flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000">
+    <video id="rickroll-video" src="/rick.mp4" class="w-full h-full object-cover" muted playsinline></video>
+  </div>
+
+<script>
+  // Запуск через 5 секунд
+  setTimeout(() => {
+    const main = document.getElementById('main-content');
+    const rickContainer = document.getElementById('rickroll-container');
+    const video = document.getElementById('rickroll-video');
+
+    // Плавно скрываем главную страницу
+    main.style.opacity = 0;
+
+    // Через 1 секунду (окончание анимации скрытия) переключаем контент
+    setTimeout(() => {
+      main.style.display = 'none';
+
+      // Показываем контейнер с видео
+      rickContainer.style.pointerEvents = 'auto';
+      rickContainer.style.opacity = 1;
+
+      // Запускаем видео
+      video.play();
+    }, 1000);
+
+  }, 5000);
+</script>
+
+</body>
+</html>
