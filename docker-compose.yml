@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  web:
+    image: ghcr.io/nrf24l01/goydazvon_demo:latest
+    container_name: goydazvon_demo
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower_goydazvon_demo
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 30
+    restart: unless-stopped
