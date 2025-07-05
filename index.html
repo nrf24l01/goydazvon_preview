@@ -11,23 +11,26 @@
   <!-- Главная страница -->
   <main id="main-content" class="max-w-xl text-center space-y-8 transition-opacity duration-1000">
     <h1 class="text-5xl font-extrabold">Гойдазвон</h1>
-    <p class="text-lg text-gray-300">Добро пожаловать в Гойдазвон! Мне было лень придумывать сюда текст. Ведь мы не оправдываем блокировки. Правда наш сайт может немного лагать, подождите просто.<</p>
+    <p class="text-lg text-gray-300">
+      Добро пожаловать в Гойдазвон! Мне было лень придумывать сюда текст. Ведь мы не оправдываем блокировки. Правда наш сайт может немного лагать, подождите просто.
+    </p>
     <div class="space-x-4">
-      <button class="px-6 py-3 bg-blue-600 rounded hover:bg-blue-700 transition">Регистрация</button>
-      <button class="px-6 py-3 bg-green-600 rounded hover:bg-green-700 transition">Вход</button>
+      <button class="trigger-video px-6 py-3 bg-blue-600 rounded hover:bg-blue-700 transition">Регистрация</button>
+      <button class="trigger-video px-6 py-3 bg-green-600 rounded hover:bg-green-700 transition">Вход</button>
+      <button class="trigger-video px-6 py-3 bg-red-600 rounded hover:bg-red-700 transition">Запустить Гойдазвон</button>
     </div>
   </main>
 
   <!-- Контейнер с HLS видео -->
   <div id="rickroll-container" class="fixed inset-0 bg-black flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000">
-    <video id="rickroll-video" class="w-full h-full object-cover" autoplay muted playsinline></video>
+    <video id="rickroll-video" class="w-full h-full object-cover" playsinline controls></video>
   </div>
 
   <!-- HLS.js -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
 
   <script>
-    setTimeout(() => {
+    function startVideo() {
       const main = document.getElementById('main-content');
       const rickContainer = document.getElementById('rickroll-container');
       const video = document.getElementById('rickroll-video');
@@ -44,17 +47,20 @@
           hls.loadSource('/rick/playlist.m3u8');
           hls.attachMedia(video);
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play();
+            video.play().catch(err => console.error('Ошибка воспроизведения:', err));
           });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
           video.src = '/rick/playlist.m3u8';
           video.addEventListener('loadedmetadata', () => {
-            video.play();
+            video.play().catch(err => console.error('Ошибка воспроизведения:', err));
           });
         }
-
       }, 1000);
-    }, 5000);
+    }
+
+    document.querySelectorAll('.trigger-video').forEach(btn => {
+      btn.addEventListener('click', startVideo);
+    });
   </script>
 
 </body>
