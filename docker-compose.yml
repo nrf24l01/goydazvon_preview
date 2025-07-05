@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   web:
-    image: ghcr.io/nrf24l01/goydazvon_demo:latest
+    image: ghcr.io/nrf24l01/goydazvon_preview/goydazvon_demo:latest
     container_name: goydazvon_demo
     ports:
       - "80:80"

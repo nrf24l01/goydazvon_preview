@@ -26,4 +26,4 @@ jobs:
 
 
       - name: Пушим образ в GHCR
-        run: docker push ghcr.io/${{ env.REPO_NAME }}/goydazvon_demo
+        run: docker push ghcr.io/${{ env.REPO_NAME }}/goydazvon_demo:latest
