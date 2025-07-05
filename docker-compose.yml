@@ -3,9 +3,9 @@ version: "3.8"
 services:
   web:
     image: ghcr.io/nrf24l01/goydazvon_preview/goydazvon_demo:latest
-    container_name: goydazvon_demo
+    container_name: goydazvon-demo
     ports:
-      - "80:80"
+      - "8002:80"
     restart: unless-stopped
 
   watchtower:
