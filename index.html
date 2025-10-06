@@ -47,13 +47,24 @@
 
   <!-- Контейнер с HLS видео -->
   <div id="rickroll-container" class="fixed inset-0 bg-black flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-1000">
-    <video id="rickroll-video" class="w-full h-full object-cover" playsinline controls></video>
+    <video id="rickroll-video" class="w-full h-full object-cover" playsinline controls preload="auto"></video>
   </div>
 
   <!-- HLS.js -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
 
   <script>
+    // Preload HLS stream
+    const videoElement = document.getElementById('rickroll-video');
+    let hlsPreloader;
+    if (Hls.isSupported()) {
+      hlsPreloader = new Hls();
+      hlsPreloader.loadSource('/rick/playlist.m3u8');
+      hlsPreloader.attachMedia(videoElement);
+    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+      videoElement.src = '/rick/playlist.m3u8';
+    }
+
     function startVideo() {
       const main = document.getElementById('main-content');
       const rickContainer = document.getElementById('rickroll-container');
@@ -85,6 +96,10 @@
     document.querySelectorAll('.trigger-video').forEach(btn => {
       btn.addEventListener('click', startVideo);
     });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.error('SW registration failed:', err));
+    }
   </script>
 </body>
 </html>

@@ -1,16 +1,17 @@
-FROM nginx:stable
+FROM debian:bullseye-slim AS builder
 
-RUN apt update && apt install -y ffmpeg
+RUN apt update && apt install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
-COPY friend.mp4 /usr/share/nginx/html/friend.mp4
+WORKDIR /data
+COPY friend.mp4 .
 
-RUN mkdir -p /usr/share/nginx/html/rick && \
-    ffmpeg -i /usr/share/nginx/html/friend.mp4 \
-      -codec: copy -start_number 0 -hls_time 8 -hls_list_size 0 -f hls \
-      /usr/share/nginx/html/rick/playlist.m3u8 && \
-    rm /usr/share/nginx/html/friend.mp4
+RUN mkdir rick && \
+    ffmpeg -i friend.mp4 \
+      -codec copy -start_number 0 -hls_time 8 -hls_list_size 0 -f hls \
+      rick/playlist.m3u8
 
+FROM nginx:stable-alpine AS final
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-
-COPY . /usr/share/nginx/html
+COPY --from=builder /data/rick /usr/share/nginx/html/rick
+COPY index.html tailwind.js sw.js /usr/share/nginx/html/
