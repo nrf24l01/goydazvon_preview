@@ -1,6 +1,4 @@
-FROM debian:bullseye-slim AS builder
-
-RUN apt update && apt install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+FROM jrottenberg/ffmpeg:8-scratch AS builder
 
 WORKDIR /data
 COPY friend.mp4 .
@@ -14,4 +12,4 @@ FROM nginx:stable-alpine AS final
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /data/rick /usr/share/nginx/html/rick
-COPY index.html tailwind.js sw.js /usr/share/nginx/html/
+COPY index.html tailwind.js sw.js hls.js /usr/share/nginx/html/
